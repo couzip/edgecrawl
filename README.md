@@ -247,6 +247,16 @@ All models run locally via ONNX Runtime. First run downloads the model to `.mode
 | LLM | Transformers.js v4 + Qwen3 ONNX | Local structured extraction |
 | CLI | Commander.js | Command-line interface |
 
+## AI Agent Skill
+
+A skill file is included for AI coding agents. Install it to let your agent use edgecrawl directly:
+
+```bash
+npx skills add couzip/edgecrawl
+```
+
+Once installed, your AI agent can scrape websites and extract structured data using edgecrawl.
+
 ## Requirements
 
 - Node.js >= 20.0.0
