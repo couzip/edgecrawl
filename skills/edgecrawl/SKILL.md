@@ -19,7 +19,14 @@ npx edgecrawl extract https://example.com --selector '#article' -s schema.json -
 import { scrapeAndExtract, cleanup } from "edgecrawl";
 
 const result = await scrapeAndExtract("https://example.com", {
-  schema: { title: "Title (string)", summary: "Summary (string)" },
+  schema: {
+    type: "object",
+    properties: {
+      title: { type: "string", description: "Title" },
+      summary: { type: "string", description: "Summary" },
+    },
+    required: ["title", "summary"],
+  },
   preset: "balanced",
   selector: "#article",
 });
@@ -29,7 +36,7 @@ await cleanup();
 
 ## Key Concepts
 
-- **Schema**: Simple `{ key: "description (type)" }` object. Not JSON Schema.
+- **Schema**: JSON Schema format with `type`, `properties`, `description`, `required`.
 - **Selector**: CSS selector to narrow HTML before processing. Critical for large pages.
 - **Preset**: `light` (0.6B, fast), `balanced` (1.7B, default), `quality` (4B, best accuracy)
 - **Device**: `webgpu` (default, GPU) or `wasm` (CPU fallback)

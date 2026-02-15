@@ -69,7 +69,14 @@ import { scrapeAndExtract, batchScrapeAndExtract, scrapeAndQuery, cleanup } from
 #### `scrapeAndExtract(url, options?) → Promise<object>`
 ```javascript
 const result = await scrapeAndExtract("https://example.com", {
-  schema: { title: "Article title (string)", summary: "Summary (string)" },
+  schema: {
+    type: "object",
+    properties: {
+      title: { type: "string", description: "Article title" },
+      summary: { type: "string", description: "Summary" },
+    },
+    required: ["title", "summary"],
+  },
   preset: "balanced",
   device: "webgpu",
   selector: "#article",
@@ -121,13 +128,21 @@ Notes:
 
 ## Schema Format
 
-Simple key-value object where keys are field names and values describe what to extract:
+JSON Schema format:
 
 ```json
 {
-  "title": "Article headline (string)",
-  "summary": "Summary in 3-5 sentences (string)",
-  "topics": "Main topics covered (array of strings)"
+  "type": "object",
+  "properties": {
+    "title": { "type": "string", "description": "Article headline" },
+    "summary": { "type": "string", "description": "Summary in 3-5 sentences" },
+    "topics": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Main topics covered"
+    }
+  },
+  "required": ["title", "summary"]
 }
 ```
 
