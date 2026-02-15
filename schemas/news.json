@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "articles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "description": "Article headline" },
+          "url": { "type": "string", "description": "Article URL" },
+          "summary": { "type": "string", "description": "Brief summary (if available)" },
+          "date": { "type": "string", "description": "Published date (if available)" }
+        },
+        "required": ["title", "url"]
+      }
+    }
+  },
+  "required": ["articles"]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "title": { "type": "string", "description": "Article title" },
+    "author": { "type": "string", "description": "Author name" },
+    "published_date": { "type": "string", "description": "Publication date" },
+    "summary": { "type": "string", "description": "Summary of the article (3-5 sentences)" },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Topics or tags"
+    }
+  },
+  "required": ["title", "summary"]
+}

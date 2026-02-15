@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "name": { "type": "string", "description": "Product name" },
+    "brand": { "type": "string", "description": "Brand or manufacturer" },
+    "price": { "type": "number", "description": "Price (numeric)" },
+    "currency": { "type": "string", "description": "Currency code (e.g. USD, EUR, JPY)" },
+    "availability": { "type": "string", "description": "Stock status (in stock, out of stock, etc.)" },
+    "rating": { "type": "number", "description": "Rating score (e.g. 4.5)" },
+    "review_count": { "type": "integer", "description": "Number of reviews" },
+    "description": { "type": "string", "description": "Product description (1-3 sentences)" },
+    "category": { "type": "string", "description": "Product category" },
+    "features": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Key features or specs"
+    }
+  },
+  "required": ["name", "price", "currency"]
+}

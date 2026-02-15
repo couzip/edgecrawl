@@ -1,0 +1,63 @@
+{
+  "name": "edgecrawl",
+  "version": "0.3.0",
+  "description": "Local AI-powered web scraper. Extract structured JSON from any website using on-device ONNX LLMs. No API keys, no cloud, no Python.",
+  "type": "module",
+  "main": "./index.mjs",
+  "exports": {
+    ".": "./index.mjs",
+    "./scraper": "./src/scraper.mjs",
+    "./html2md": "./src/html2md.mjs",
+    "./llm": "./src/llm.mjs",
+    "./structured-extract": "./src/structured-extract.mjs"
+  },
+  "bin": {
+    "edgecrawl": "./src/cli.mjs"
+  },
+  "files": [
+    "index.mjs",
+    "src/",
+    "schemas/",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "extract": "node src/cli.mjs extract",
+    "batch": "node src/cli.mjs batch",
+    "query": "node src/cli.mjs query",
+    "md": "node src/cli.mjs md"
+  },
+  "keywords": [
+    "scraper",
+    "web-scraping",
+    "llm",
+    "onnx",
+    "local-ai",
+    "structured-data",
+    "json",
+    "headless",
+    "playwright",
+    "edge-computing",
+    "transformers"
+  ],
+  "author": "Koji Hayashida",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/couzip/edgecrawl.git"
+  },
+  "homepage": "https://github.com/couzip/edgecrawl#readme",
+  "bugs": {
+    "url": "https://github.com/couzip/edgecrawl/issues"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "4.0.0-next.3",
+    "commander": "^12.0.0",
+    "jsdom": "^25.0.0",
+    "node-html-markdown": "^2.0.0",
+    "playwright": "^1.48.0"
+  }
+}
