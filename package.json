@@ -1,6 +1,6 @@
 {
   "name": "edgecrawl",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Local AI-powered web scraper. Extract structured JSON from any website using on-device ONNX LLMs. No API keys, no cloud, no Python.",
   "type": "module",
   "main": "./index.mjs",
