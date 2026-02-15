@@ -7,7 +7,6 @@ Local AI-powered web scraper. Extract structured JSON from any website using on-
 - **100% Local AI** — Runs Qwen3 ONNX models on your machine via Transformers.js v4 (WebGPU/WASM)
 - **Zero API Keys** — No OpenAI, no Anthropic, no cloud bills. Everything runs on-device
 - **Structured JSON Output** — Define a schema, get clean JSON back
-- **Smart Extraction** — Tries JSON-LD/Open Graph first, falls back to LLM only when needed
 - **CLI + Library** — Use from the command line or import into your Node.js app
 
 ## Architecture

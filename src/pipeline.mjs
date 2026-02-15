@@ -9,7 +9,6 @@ import {
 } from "./scraper.mjs";
 import { htmlToMarkdown, cleanMarkdown, truncateForLLM } from "./html2md.mjs";
 import { initLLM, extractStructured, queryLLM } from "./llm.mjs";
-import { tryStructuredExtract } from "./structured-extract.mjs";
 
 /**
  * Default schema definition
@@ -44,18 +43,6 @@ export async function scrapeAndExtract(url, options = {}) {
   const { html, url: finalUrl, status } = await fetchPage(url, scrapeOptions);
   if (!html) return { url, error: "Failed to fetch page", status };
 
-  // Try structured data (JSON-LD / OG) first
-  const structResult = tryStructuredExtract(html, schema);
-  if (structResult) {
-    return {
-      url: finalUrl, status,
-      extraction_source: structResult.source,
-      coverage: structResult.coverage,
-      extracted: structResult.extracted,
-    };
-  }
-
-  // Fallback: Markdown conversion -> cleanMarkdown -> LLM
   const { markdown, title, excerpt } = htmlToMarkdown(html, finalUrl, { selector });
   const llmInput = cleanMarkdown(markdown);
   const metadata = {
@@ -98,19 +85,6 @@ export async function batchScrapeAndExtract(urls, options = {}) {
       continue;
     }
 
-    // Try structured data first
-    const structResult = tryStructuredExtract(page.html, schema);
-    if (structResult) {
-      results.push({
-        url: page.url, status: page.status,
-        extraction_source: structResult.source,
-        coverage: structResult.coverage,
-        extracted: structResult.extracted,
-      });
-      continue;
-    }
-
-    // Fallback: Markdown -> LLM
     const { markdown, title } = htmlToMarkdown(page.html, page.url);
     const truncated = truncateForLLM(cleanMarkdown(markdown), maxTokens);
 

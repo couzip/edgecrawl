@@ -250,7 +250,7 @@ function normalizeExtracted(parsed) {
  * Safely parse a JSON string from LLM output
  */
 function parseJSONSafe(raw) {
-  // Remove think tags
+  // Remove think tags (closed and unclosed)
   let cleaned = raw.replace(/<think>[\s\S]*?<\/think>/g, "");
   cleaned = cleaned.replace(/<think>[\s\S]*/g, "");
   // Remove code fences
@@ -260,19 +260,44 @@ function parseJSONSafe(raw) {
   try {
     return JSON.parse(cleaned);
   } catch {
-    // Find the last valid JSON object
+    // Try broadest { ... } match first (handles nested objects/arrays)
+    const broad = cleaned.match(/\{[\s\S]*\}/);
+    if (broad) {
+      try {
+        return JSON.parse(broad[0]);
+      } catch {
+        // Try fixing common LLM JSON issues
+        try {
+          let fixed = broad[0];
+          fixed = fixed.replace(/,\s*([}\]])/g, "$1");  // trailing commas
+          // Fix bracket mismatches: ] closed with } or vice versa
+          const stack = [];
+          const chars = fixed.split("");
+          for (let i = 0; i < chars.length; i++) {
+            if (chars[i] === "{" || chars[i] === "[") {
+              stack.push(chars[i]);
+            } else if (chars[i] === "}") {
+              if (stack.length && stack[stack.length - 1] === "[") {
+                chars[i] = "]";  // fix: [ was opened, } should be ]
+              }
+              stack.pop();
+            } else if (chars[i] === "]") {
+              if (stack.length && stack[stack.length - 1] === "{") {
+                chars[i] = "}";  // fix: { was opened, ] should be }
+              }
+              stack.pop();
+            }
+          }
+          return JSON.parse(chars.join(""));
+        } catch {}
+      }
+    }
+    // Find the last valid JSON object (shallow)
     const matches = [...cleaned.matchAll(/\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}/g)];
     for (let i = matches.length - 1; i >= 0; i--) {
       try {
         return JSON.parse(matches[i][0]);
       } catch { continue; }
-    }
-    // Try broadest match
-    const broad = cleaned.match(/\{[\s\S]*\}/);
-    if (broad) {
-      try {
-        return JSON.parse(broad[0]);
-      } catch {}
     }
     return { _raw: raw, _error: "Failed to parse JSON" };
   }
