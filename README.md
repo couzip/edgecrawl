@@ -166,9 +166,17 @@ const result = await scrapeAndExtract("https://example.com");
 // Custom schema
 const product = await scrapeAndExtract("https://shop.example.com/item", {
   schema: {
-    title: "Product name (string)",
-    price: "Current price (string)",
-    features: "Key features (array of strings)",
+    type: "object",
+    properties: {
+      name: { type: "string", description: "Product name" },
+      price: { type: "number", description: "Price (numeric)" },
+      features: {
+        type: "array",
+        items: { type: "string" },
+        description: "Key features or specs",
+      },
+    },
+    required: ["name", "price"],
   },
 });
 
@@ -213,12 +221,20 @@ Define what data to extract by providing a JSON schema file:
 
 ```json
 {
-  "title": "Product name (string)",
-  "price": "Current price (string)",
-  "currency": "Currency code (string)",
-  "description": "Product description (string)",
-  "features": "Key features (array of strings)",
-  "availability": "In stock or out of stock (string)"
+  "type": "object",
+  "properties": {
+    "name": { "type": "string", "description": "Product name" },
+    "price": { "type": "number", "description": "Price (numeric)" },
+    "currency": { "type": "string", "description": "Currency code (e.g. USD, EUR, JPY)" },
+    "description": { "type": "string", "description": "Product description (1-3 sentences)" },
+    "features": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Key features or specs"
+    },
+    "availability": { "type": "string", "description": "Stock status (in stock, out of stock, etc.)" }
+  },
+  "required": ["name", "price", "currency"]
 }
 ```
 
